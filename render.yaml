@@ -1,0 +1,135 @@
+services:
+  # 1. Auth Service
+  - type: web
+    name: hms-auth-service
+    env: docker
+    dockerContext: backend
+    dockerCommand: ""
+    dockerfilePath: Dockerfile
+    dockerBuildArgs:
+      SERVICE_NAME: auth-service
+    plan: free
+    healthCheckPath: /api/auth/users
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: hms-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: hms-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: hms-db
+          property: password
+      - key: SPRING_DATASOURCE_DRIVER
+        value: org.postgresql.Driver
+      - key: SPRING_JPA_DIALECT
+        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: JWT_SECRET
+        generateValue: true
+
+  # 2. Hospital Service
+  - type: web
+    name: hms-hospital-service
+    env: docker
+    dockerContext: backend
+    dockerCommand: ""
+    dockerfilePath: Dockerfile
+    dockerBuildArgs:
+      SERVICE_NAME: hospital-service
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: hms-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: hms-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: hms-db
+          property: password
+      - key: SPRING_DATASOURCE_DRIVER
+        value: org.postgresql.Driver
+      - key: SPRING_JPA_DIALECT
+        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: JWT_SECRET
+        fromService:
+          type: web
+          name: hms-auth-service
+          envVar: JWT_SECRET
+
+  # 3. Appointment Service
+  - type: web
+    name: hms-appointment-service
+    env: docker
+    dockerContext: backend
+    dockerCommand: ""
+    dockerfilePath: Dockerfile
+    dockerBuildArgs:
+      SERVICE_NAME: appointment-service
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: hms-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: hms-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: hms-db
+          property: password
+      - key: SPRING_DATASOURCE_DRIVER
+        value: org.postgresql.Driver
+      - key: SPRING_JPA_DIALECT
+        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: JWT_SECRET
+        fromService:
+          type: web
+          name: hms-auth-service
+          envVar: JWT_SECRET
+      - key: STORAGE_TYPE
+        value: minio # Recommended: switch to s3 for persistent storage
+
+  # 4. Frontend Static Site
+  - type: static
+    name: hms-frontend
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: dist
+    rootDirectory: frontend
+    envVars:
+      - key: VITE_AUTH_URL
+        fromService:
+          type: web
+          name: hms-auth-service
+          property: host
+      - key: VITE_HOSPITAL_URL
+        fromService:
+          type: web
+          name: hms-hospital-service
+          property: host
+      - key: VITE_APPOINTMENT_URL
+        fromService:
+          type: web
+          name: hms-appointment-service
+          property: host
+
+databases:
+  - name: hms-db
+    plan: free
+    databaseName: hms_db
+    user: hms_user
