@@ -105,7 +105,7 @@ services:
         value: minio # Recommended: switch to s3 for persistent storage
 
   # 4. Frontend Static Site
-  - type: static
+  - type: web
     name: hms-frontend
     env: static
     buildCommand: npm run build
