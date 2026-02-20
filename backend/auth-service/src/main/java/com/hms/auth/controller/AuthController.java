@@ -26,6 +26,11 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("User registered successfully", response));
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<ApiResponse<String>> health() {
+        return ResponseEntity.ok(ApiResponse.success("OK", "auth-service"));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);

@@ -65,11 +65,12 @@ npm run dev
 Open http://localhost:5173
 
 ### Demo Credentials
-| Role   | Username | Password   |
-|--------|----------|------------|
-| Admin  | admin    | admin123   |
-| Doctor | doctor   | doctor123  |
-| Staff  | staff    | staff123   |
+| Role       | Username   | Password      |
+|------------|------------|---------------|
+| Super Admin| superadmin | superadmin123 |
+| Admin      | admin      | admin123      |
+| Doctor     | doctor     | doctor123     |
+| Staff      | staff      | staff123      |
 
 ## Features
 
@@ -99,6 +100,18 @@ Open http://localhost:5173
 ├── docker-compose.yml
 └── README.md
 ```
+
+## Deploying on Render
+
+The repo includes a `render.yaml` blueprint. After deploying:
+
+1. **Login (including superadmin)**  
+   The auth service creates a default **superadmin** user on first run: username `superadmin`, password `superadmin123`. Use this to log in and create other users/hospitals.
+
+2. **If login still fails on Render**  
+   - Ensure the frontend was **rebuilt after** the backend services were deployed (so `VITE_AUTH_URL` etc. are set from each service’s `RENDER_EXTERNAL_URL`).  
+   - In the Render Dashboard, confirm the **hms-frontend** service has env vars `VITE_AUTH_URL`, `VITE_HOSPITAL_URL`, and `VITE_APPOINTMENT_URL` set to the **full public URLs** of the corresponding backends (e.g. `https://hms-auth-service.onrender.com`).  
+   - Redeploy the frontend after changing these env vars (they are baked in at build time).
 
 ## Environment Configuration
 

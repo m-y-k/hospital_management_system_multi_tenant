@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/health").permitAll()
                         .requestMatchers("/api/auth/register", "/api/auth/users").hasAnyRole("SUPER_ADMIN", "ADMIN")
                         .requestMatchers("/api/auth/{id}/toggle-status").hasAnyRole("SUPER_ADMIN", "ADMIN")
                         .anyRequest().authenticated())
@@ -47,7 +47,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:5173", "http://localhost:3000",
+                "https://*.onrender.com", "http://*.onrender.com"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
