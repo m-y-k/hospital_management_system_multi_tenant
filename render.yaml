@@ -65,7 +65,7 @@ services:
         fromService:
           type: web
           name: hms-auth-service
-          envVar: JWT_SECRET
+          envVarKey: JWT_SECRET
 
   # 3. Appointment Service
   - type: web
@@ -100,7 +100,7 @@ services:
         fromService:
           type: web
           name: hms-auth-service
-          envVar: JWT_SECRET
+          envVarKey: JWT_SECRET
       - key: STORAGE_TYPE
         value: minio # Recommended: switch to s3 for persistent storage
 
