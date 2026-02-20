@@ -6,11 +6,11 @@ services:
     dockerContext: backend
     dockerCommand: ""
     dockerfilePath: Dockerfile
-    dockerBuildArgs:
-      SERVICE_NAME: auth-service
     plan: free
     healthCheckPath: /api/auth/users
     envVars:
+      - key: SERVICE_NAME
+        value: auth-service
       - key: PORT
         value: 8080
       - key: SPRING_DATASOURCE_URL
@@ -39,10 +39,10 @@ services:
     dockerContext: backend
     dockerCommand: ""
     dockerfilePath: Dockerfile
-    dockerBuildArgs:
-      SERVICE_NAME: hospital-service
     plan: free
     envVars:
+      - key: SERVICE_NAME
+        value: hospital-service
       - key: PORT
         value: 8080
       - key: SPRING_DATASOURCE_URL
@@ -74,10 +74,10 @@ services:
     dockerContext: backend
     dockerCommand: ""
     dockerfilePath: Dockerfile
-    dockerBuildArgs:
-      SERVICE_NAME: appointment-service
     plan: free
     envVars:
+      - key: SERVICE_NAME
+        value: appointment-service
       - key: PORT
         value: 8080
       - key: SPRING_DATASOURCE_URL
