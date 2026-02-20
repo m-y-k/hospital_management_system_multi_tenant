@@ -110,7 +110,7 @@ services:
     env: static
     buildCommand: npm run build
     staticPublishPath: dist
-    rootDirectory: frontend
+    rootDir: frontend
     envVars:
       - key: VITE_AUTH_URL
         fromService:
