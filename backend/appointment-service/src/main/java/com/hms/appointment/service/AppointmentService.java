@@ -8,7 +8,7 @@ import com.hms.appointment.entity.AppointmentStatus;
 import com.hms.appointment.entity.PrescribedMedicine;
 import com.hms.appointment.entity.Prescription;
 import com.hms.appointment.repository.AppointmentRepository;
-import com.hms.appointment.repository.PrescriptionRepository;
+
 import com.hms.common.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,16 +26,13 @@ import java.util.stream.Collectors;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final PrescriptionRepository prescriptionRepository;
     private final StorageService storageService;
     private final HospitalClient hospitalClient;
 
     public AppointmentService(AppointmentRepository appointmentRepository,
-            PrescriptionRepository prescriptionRepository,
             StorageService storageService,
             HospitalClient hospitalClient) {
         this.appointmentRepository = appointmentRepository;
-        this.prescriptionRepository = prescriptionRepository;
         this.storageService = storageService;
         this.hospitalClient = hospitalClient;
     }
