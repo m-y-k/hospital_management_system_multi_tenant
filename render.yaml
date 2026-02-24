@@ -3,9 +3,8 @@ services:
   - type: web
     name: hms-auth-service
     env: docker
-    dockerContext: backend
-    dockerCommand: ""
-    dockerfilePath: Dockerfile
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
     plan: free
     healthCheckPath: /api/auth/health
     envVars:
@@ -36,9 +35,8 @@ services:
   - type: web
     name: hms-hospital-service
     env: docker
-    dockerContext: backend
-    dockerCommand: ""
-    dockerfilePath: Dockerfile
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
     plan: free
     envVars:
       - key: SERVICE_NAME
@@ -71,9 +69,8 @@ services:
   - type: web
     name: hms-appointment-service
     env: docker
-    dockerContext: backend
-    dockerCommand: ""
-    dockerfilePath: Dockerfile
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
     plan: free
     envVars:
       - key: SERVICE_NAME
