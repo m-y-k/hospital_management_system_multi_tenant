@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.8.4-openjdk-17-slim AS build
+FROM maven:3.8.4-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy the parent pom and all service poms
@@ -22,7 +22,7 @@ COPY appointment-service/src appointment-service/src
 RUN mvn clean package -DskipTests
 
 # Run stage
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # The SERVICE_NAME argument will determine which jar to run
