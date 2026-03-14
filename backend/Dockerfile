@@ -32,6 +32,10 @@ ENV SERVICE_NAME_ENV=${SERVICE_NAME}
 # Copy the built jar from the build stage
 COPY --from=build /app/${SERVICE_NAME}/target/*.jar app.jar
 
+# Copy and set the entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["/app/entrypoint.sh"]
